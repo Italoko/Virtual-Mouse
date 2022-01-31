@@ -1,12 +1,9 @@
-from enum import auto
-from charset_normalizer import detect
 import cv2
 import mediapipe as mp
 import time 
 import hands_detector as detector
 import numpy as np
 import pyautogui
-
 
 pyautogui.MINIMUM_DURATION = 0
 
@@ -47,10 +44,9 @@ def main ():
                 
                 hand_detected = detector.get_hand(result,0)
                 index_finger = detector.get_landmark(hand_detected,8)
-            
-                #mapeia para o tamanho da janela 
+             
                 coords_index_finger_window = tuple(np.multiply(np.array((index_finger[0],index_finger[1])) , [image.shape[1], image.shape[0]]).astype(int))
-                #mapeia para o tamanho da tela
+                
                 coords_index_finger_screen = tuple(np.multiply(np.array((index_finger[0],index_finger[1])) , [width_screen, height_screen]).astype(int))
                 cv2.circle(image,coords_index_finger_window,15,(0,0,255))
                 pyautogui.moveTo(x = coords_index_finger_screen[0], y = coords_index_finger_screen[1])
@@ -69,8 +65,6 @@ def main ():
                             pyautogui.mouseUp();
                             cv2.putText(image,'Botao Solto',(1,50),cv2.FONT_HERSHEY_COMPLEX_SMALL,1,(0,0,0),2)
                             btn_pressed = False
-                #print(coords_index_finger)
-                #print(detector.linked_finger(hand_detected,8,4))
 
             cv2.flip(image, 1)
             image, prev_time = print_fps(image,time.time(),prev_time)
